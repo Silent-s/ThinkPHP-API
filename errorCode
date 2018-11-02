@@ -1,0 +1,13 @@
+10000    通用参数错误
+20000    用户不存在
+20001    账户已经被锁定
+20002    账户密码错误
+20003    Token已过期或无效Token
+20004    服务器Token缓存异常
+
+授权Token     /api/v1/user/login
+刷新Token     /api/v1/user/refrsh_token
+注册          /api/v1/user/register
+找回密码       /api/v1/user/find_pass
+获取用户信息   /api/v1/user/userinfo
+
