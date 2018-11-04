@@ -15,7 +15,7 @@ class Token
      */
     public static function generateToken()
     {
-        $randChar = uniqid();
+        $randChar = uniqid(microtime(true), true);
         $timestamp = $_SERVER['REQUEST_TIME_FLOAT'];
         $tokenSalt = config('secure.token_salt');
         return md5($randChar . $timestamp . $tokenSalt);

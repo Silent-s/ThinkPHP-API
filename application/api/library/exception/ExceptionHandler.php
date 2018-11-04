@@ -3,6 +3,7 @@
 namespace app\api\library\exception;
 
 use Exception;
+use think\db\exception\ModelNotFoundException;
 use think\exception\Handle;
 use think\facade\Log;
 use think\facade\Request;
@@ -14,31 +15,29 @@ class ExceptionHandler extends Handle
     private $errorCode;   // 状态码
 
     /**
-     * 统一异常处理
+     * 异常错误统一处理
      * @param Exception $e
      * @return \think\Response|\think\response\Json
      */
     public function render(Exception $e)
     {
-        // 两种异常:1.自定义错误异常 2.系统错误异常
+
         if ($e instanceof BaseException) {
-            // 自定义错误异常
-            $this->httpCode = $e->httpCode;
-            $this->msg = $e->msg;
-            $this->errorCode = $e->errorCode;
+            // 拦截自定义异常错误处理
+            $this->setResponseContent($e->httpCode, $e->msg, $e->errorCode);
+        } else if ($e instanceof \UnexpectedValueException) {
+            // 拦截token异常抛出的错误
+            $this->setResponseContent(401, $e->getMessage(), 700);
+        } else if ($e instanceof ModelNotFoundException) {
+            // 模型找不到数据时抛出异常
+            $this->setResponseContent(404, $e->getMessage(), 800);
         } else {
-            // 系统异常,开发时需要看见具体错误信息
-            // 生产时,需要给客户端返回统一信息
             if (config('app_debug')) {
-                // 默认异常页面
+                // 调试模式记录, 展示具体信息
                 return parent::render($e);
             } else {
-                // 统一状态信息
-                $this->code = 500;
-                $this->msg = '服务器内部异常';
-                $this->errorCode = 999;
-                // 记录日志,方便开发查看
-                $this->recordErrorLog($e);
+                $this->setRecordErrorLogs($e);
+                $this->setResponseContent(500, '服务器内部异常', $e->getMessage(), 900);
             }
         }
         $result = [
@@ -49,11 +48,25 @@ class ExceptionHandler extends Handle
         return json($result, $this->httpCode);
     }
 
+
+    /**
+     * 设置响应内容
+     * @param $httpCode
+     * @param $msg
+     * @param $errorCode
+     */
+    private function setResponseContent($httpCode, $msg, $errorCode)
+    {
+        $this->httpCode = $httpCode;
+        $this->msg = $msg;
+        $this->errorCode = $errorCode;
+    }
+
     /**
      * 记录服务器异常
      * @param $e
      */
-    private function recordErrorLog($e)
+    private function setRecordErrorLogs($e)
     {
         // 初始化日志(默认日志系统已经关闭)
         Log::init([

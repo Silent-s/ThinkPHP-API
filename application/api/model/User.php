@@ -18,6 +18,26 @@ class User extends Model
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+    /**
+     * 检查手机号码是否已被注册
+     *
+     * @param $mobile_number
+     * @return float|string
+     */
+    public static function findByMobileNumber($mobile_number)
+    {
+        return self::where('mobile_number', '=', $mobile_number)->count();
+    }
 
+    /**
+     * 检查用户昵称是否已被注册
+     *
+     * @param $nickname
+     * @return float|string
+     */
+    public static function findByNickname($nickname)
+    {
+        return self::where('nickname', '=', $nickname)->count();
+    }
 
 }
