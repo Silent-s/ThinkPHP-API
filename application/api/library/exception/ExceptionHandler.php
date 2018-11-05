@@ -3,6 +3,10 @@
 namespace app\api\library\exception;
 
 use Exception;
+use Firebase\JWT\BeforeValidException;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\JWT;
+use Firebase\JWT\SignatureInvalidException;
 use think\db\exception\ModelNotFoundException;
 use think\exception\Handle;
 use think\facade\Log;
@@ -26,8 +30,8 @@ class ExceptionHandler extends Handle
             // 拦截自定义异常错误处理
             $this->setResponseContent($e->httpCode, $e->msg, $e->errorCode);
         } else if ($e instanceof \UnexpectedValueException) {
-            // 拦截token异常抛出的错误
-            $this->setResponseContent(401, $e->getMessage(), 700);
+            // 拦截签名自定义异常
+            $this->verifyFirebaseToken($e);
         } else if ($e instanceof ModelNotFoundException) {
             // 模型找不到数据时抛出异常
             $this->setResponseContent(404, $e->getMessage(), 800);
@@ -48,6 +52,29 @@ class ExceptionHandler extends Handle
         return json($result, $this->httpCode);
     }
 
+
+    /**
+     * 检测jwt-Toekn
+     * @param $e
+     */
+    private function verifyFirebaseToken($e)
+    {
+        if ($e instanceof ExpiredException) {
+            // token过期
+            $this->setResponseContent(401, $e->getMessage(), 703);
+        } else if ($e instanceof SignatureInvalidException) {
+            // 签名不正确
+            $this->setRecordErrorLogs($e);
+            $this->setResponseContent(401, $e->getMessage(), 701);
+        } else if ($e instanceof BeforeValidException) {
+            // 签名在某个时间点之后才能用
+            $this->setResponseContent(401, $e->getMessage(), 702);
+        } else {
+            // 其他错误
+            $this->setRecordErrorLogs($e);
+            $this->setResponseContent(401, $e->getMessage(), 700);
+        }
+    }
 
     /**
      * 设置响应内容

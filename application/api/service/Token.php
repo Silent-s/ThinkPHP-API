@@ -3,26 +3,47 @@
 namespace app\api\service;
 
 use app\api\library\exception\TokenException;
+use Firebase\JWT\JWT;
 use think\Exception;
 use think\facade\Cache;
-use think\Request;
+use think\facade\Request;
 
 class Token
 {
     /**
-     * 生成随机令牌
-     * @return string
+     * 签发 access_token 和 refresh_token
+     * @param $user_id
+     * @return array
      */
-    public static function generateToken()
+    public static function issueToken($user_id)
     {
-        $randChar = uniqid(microtime(true), true);
-        $timestamp = $_SERVER['REQUEST_TIME_FLOAT'];
-        $tokenSalt = config('secure.token_salt');
-        return md5($randChar . $timestamp . $tokenSalt);
+        $key = config('jwt.token_salt');
+        $time = time();
+        $token = [
+            'iss' => Request::url(true),  // 签发着
+            'iat' => $time,                       //签发时间
+            'data' => [                           // 自定义信息
+                'user_id' => $user_id
+            ]
+        ];
+        // access_token
+        $access_token = $token;
+        $access_token['scopes'] = 'role_access';
+        $access_token['exp'] = $time + 7200;
+        // refresh_token
+        $refresh_token = $token;
+        $refresh_token['scopes'] = 'role_refresh';
+        $refresh_token['exp'] = $time + (86400 * 7);
+        $jsonList = [
+            'access_token' => JWT::encode($access_token, $key),
+            'refresh_token' => JWT::encode($refresh_token, $key),
+            'token_type' => 'bearer' //token_type：表示令牌类型，该值大小写不敏感，这里用bearer
+        ];
+        return $jsonList;
     }
 
     /**
-     * 获取指定token变量的字段
+     * 获取指定jwt-token变量的字段
      * @param $key
      * @return mixed
      * @throws Exception
@@ -30,16 +51,19 @@ class Token
      */
     public static function getCurrentTokenVar($key)
     {
-        $token = Request::header('token');
-        $vars = Cache::get($token);
-        if (!$vars) {
+        $saltkey = config('jwt.token_salt');
+        $authorization = Request::header('authorization');
+        sscanf($authorization, "Bearer %s", $jwt);
+        $data = (array)JWT::decode($jwt, $saltkey, array('HS256'));
+        if (!$data) {
             throw new TokenException();
         }
-        if (!is_array($vars)) {
-            $vars = json_decode($vars, true);
-        }
-        if (array_key_exists($key, $vars)) {
-            return $vars[$key];
+        $listdata = (array)$data['data'];
+        dump($listdata);
+        if (array_key_exists($key, $listdata)) {
+            dump($key);
+            dump($data[$key]);
+            return $data[$key];
         }
         throw new Exception('尝试获取Token变量并不存在');
     }

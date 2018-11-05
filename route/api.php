@@ -2,9 +2,11 @@
 
 use think\facade\Route;
 Route::get('api/:version/test','api/:version.Test/test');
-Route::get('api/:version/test1','api/:version.Test/test2');
+Route::get('api/:version/test2','api/:version.Test/test2');
+Route::post('api/:version/test3','api/:version.Test/test3');
 // 用户注册
 Route::post('api/:version/users','api/:version.Users/store');
+Route::post('api/:version/token','api/:version.Token/token');
 // 用户登录
 // 短信登陆
 // 用户信息
