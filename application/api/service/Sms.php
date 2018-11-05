@@ -63,6 +63,6 @@ class Sms
             'charset' => 'UTF-8'
         ];
         $alisms = new Lite();
-        $alisms->sendSms($params,$mobile_number,'')
+        $alisms->sendSms($params,$mobile_number);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use think\facade\Route;
+Route::get('api/:version/test','api/:version.Test/test');
+Route::get('api/:version/test1','api/:version.Test/test2');
 // 用户注册
 Route::post('api/:version/users','api/:version.Users/store');
 // 用户登录
