@@ -20,7 +20,8 @@
         "topthink/framework": "5.1.*",
         "firebase/php-jwt": "^5.0",
         "blocktrail/cryptojs-aes-php": "^0.1.0",
-        "defuse/php-encryption": "^2.2"
+        "defuse/php-encryption": "^2.2",
+        "shoudian/alisms": "dev-master"
     },
     "autoload": {
         "psr-4": {

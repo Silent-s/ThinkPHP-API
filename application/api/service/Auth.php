@@ -5,6 +5,7 @@ namespace app\api\service;
 use app\api\library\enum\UserStatusEnum;
 use app\api\library\exception\UserException;
 use app\api\model\User as UserModel;
+use think\Db;
 use think\facade\Cache;
 
 class Auth
@@ -50,6 +51,7 @@ class Auth
      * @param $verify_code
      * @param $password
      * @param $nickname
+     * @throws UserException
      */
     public function register($mobile_number, $verify_code, $password, $nickname)
     {
@@ -90,6 +92,7 @@ class Auth
             'salt' => $salt,
             'password' => $this->getEncryptPassword($password, $salt)
         ]);
+        return true;
     }
 
     /**

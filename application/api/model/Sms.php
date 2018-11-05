@@ -2,9 +2,10 @@
 
 namespace app\api\model;
 
+use think\Model;
 use think\model\concern\SoftDelete;
 
-class Sms
+class Sms extends Model
 {
     use SoftDelete;
     protected $deleteTime = 'delete_time';
@@ -20,8 +21,8 @@ class Sms
     /**
      * 获取最后一次手机发送的数据
      *
-     * @param   int      $mobile 手机号
-     * @param   string   $event 事件
+     * @param   int $mobile 手机号
+     * @param   string $event 事件
      * @return  Sms
      */
     public static function getLastTime($mobile, $event = 'default')
@@ -30,5 +31,14 @@ class Sms
             ->order('id', 'desc')
             ->find();
         return $sms ? $sms : null;
+    }
+
+
+    public static function getIpsendTotal($ip)
+    {
+        $ip = self::where('ip', '=', $ip)
+            ->whereTime('createtime', '-1 hours')
+            ->count();
+        return $ip;
     }
 }
