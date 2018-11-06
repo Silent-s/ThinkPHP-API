@@ -8,13 +8,13 @@ namespace app\api\validate;
 class UserLogin extends BaseValidate
 {
     protected $rule = [
-        'account'  => 'require|isMobile',
+        'telphone'  => 'require|isMobile',
         'password' => 'require|length:1,20',
     ];
 
     protected $message = [
-        'account.require'  => '手机号不能为空',
-        'account.isMobile' => '手机号格式不正确',
+        'telphone.require'  => '手机号不能为空',
+        'telphone.isMobile' => '手机号格式不正确',
         'password.require' => '密码不能为空',
         'password.length'  => '密码在6-20个字符之间'
     ];

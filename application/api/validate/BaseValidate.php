@@ -18,9 +18,9 @@ class BaseValidate extends Validate
      */
     public function checkParams()
     {
-        $params = Request::param();  //需要获取路由变量
+        $params  = Request::param();
         // 对参数进行校验
-        $result = $this->check($params);
+        $result  = $this->check($params);
         if (false === $result) {
             throw new ParameterException([
                 'msg' => $this->error

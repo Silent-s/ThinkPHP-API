@@ -86,7 +86,8 @@ class Auth
         }
         // 创建用户
         $salt = uniqid();
-        $user = UserModel::create([
+        //
+        UserModel::create([
             'mobile_number' => $mobile_number,
             'nickname' => $nickname,
             'salt' => $salt,
