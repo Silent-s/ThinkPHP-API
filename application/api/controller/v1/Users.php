@@ -26,14 +26,11 @@ class Users extends Controller
     {
         (new UserRegisterValidate())->checkParams();
 
-        $mobile_number = $this->request->post('mobile_number');
-        $verify_code = $this->request->post('verify_code');
-        $password = $this->request->post('password');
-        $nickname = $this->request->post('nickname');
-        $auth = new AuthService();
+        $telphone      = $this->request->post('mobile_number');
+        $verify_code   = $this->request->post('verify_code');
+        $password      = $this->request->post('password');
+        $nickname      = $this->request->post('nickname');
+        $auth          = new AuthService();
         $auth->register($mobile_number, $verify_code, $password, $nickname);
-        return new SuccessMessage([
-            'msg' => '注册成功'
-        ]);
     }
 }
