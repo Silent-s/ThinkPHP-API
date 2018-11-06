@@ -1,24 +1,43 @@
 <?php
 
 use think\facade\Route;
-Route::get('api/:version/test','api/:version.Test/test');
-Route::get('api/:version/test2','api/:version.Test/test2');
-Route::post('api/:version/test3','api/:version.Test/test3');
+
+// 用户登录(获取Token)
+Route::post('api/:version/token', 'api/:version.Token/getToken');
+// 用户保持登录(刷新Token)
+Route::post('api/:version/refresh_token', 'api/:version.Token/refreshToken');
+
 // 用户注册
-Route::post('api/:version/users','api/:version.Users/store');
-Route::post('api/:version/token','api/:version.Token/token');
-// 用户登录
-// 短信登陆
-// 用户信息
-// 编辑用户信息
-// 主页轮播图接口
-// APP启动页面接口
-// 用户反馈
-// 分类列表
-// 发布话题
-// 话题列表
-// 话题详情
-// 回复
-// 用户回复点赞接口
-// 获取话题回复列表
-// 消息推送
+Route::post('api/:version/users', 'api/:version.Users/createUser');
+// 获取用户信息
+Route::get('api/:version/users', 'api/:version/getUser');
+// 修改用户昵称
+Route::put('api/:version/users/username', 'api/:version/editUsername');
+// 修改用户密码
+Route::put('api/:version/users/password', 'api/:version/editPassword');
+// 修改用户头像
+Route::put('api/:version/users/head_portrait', 'api/:version/editHeadPortrait');
+// 修改生日
+Route::put('api/:version/users/birthday', 'api/:version/editBirthday');
+// 修改介绍
+Route::put('api/:version/users/introduce', 'api/:version/editIintroduce');
+// 修改地址
+Route::put('api/:version/users/address', 'api/:version/editAddress');
+
+
+// 增加用户地址
+Route::post('api/:version/address', 'api/:version.Address/addUserAddress');
+// 修改用户地址
+Route::put('api/:version/address', 'api/:version.Address/editUserAddress');
+// 获取用户地址列表
+Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
+// 获取用户某个地址信息
+Route::get('api/:version/address/:id', 'api/:version.Address/getUserAddressOne');
+// 删除用户某个地址(单条删除)
+Route::delete('api/:version/address/:id', 'api/:version.Address/deleteUserAddressOne');
+
+// 单图上传
+Route::post('api/:version/file', 'api/:version.Upload/addUserAddress');
+// 多图上传
+Route::post('api/:version/files', 'api/:version.Upload/addaddress');
+
