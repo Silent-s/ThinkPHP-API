@@ -6,9 +6,14 @@ use app\api\service\AppToken as AppTokenService;
 use app\api\validate\ModifyUserInfo as ModifyUserInfoValidate;
 use think\Controller;
 
+/**
+ * 用户修改验证
+ * @author <zttvi@outlook.com>
+ */
 class Users extends Controller
 {
     private $uid;
+
     private $action;
 
 
