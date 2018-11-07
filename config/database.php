@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '127.0.0.1',
+    'hostname'        => '47.105.150.138',
     // 数据库名
     'database'        => 'app',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'app',
     // 密码
-    'password'        => 'root',
+    'password'        => '123456',
     // 端口
     'hostport'        => '',
     // 连接dsn

@@ -2,35 +2,65 @@
 
 namespace app\api\controller\v1;
 
-use app\api\validate\UserRegister as UserRegisterValidate;
-use app\api\service\Auth as AuthService;
-use app\lib\exception\SuccessMessage;
+use app\api\service\AppToken as AppTokenService;
+use app\api\validate\ModifyUserInfo as ModifyUserInfoValidate;
 use think\Controller;
 
 class Users extends Controller
 {
-    /**
-     * 会员注册
-     *
-     * @method    POST
-     * @url       /api/v1/users
-     * @param     string  mobile_number  手机号码
-     * @param     string  verify_code    手机验证码
-     * @param     string  password       输入密码(至少6位)
-     * @param     string  nickname       输入昵称
-     * @throws    \app\api\library\exception\ParameterException
-     * @throws    \app\api\library\exception\UserException
-     * @return    SuccessMessage
-     */
-    public function store()
-    {
-        (new UserRegisterValidate())->checkParams();
+    private $uid;
+    private $action;
 
-        $telphone      = $this->request->post('mobile_number');
-        $verify_code   = $this->request->post('verify_code');
-        $password      = $this->request->post('password');
-        $nickname      = $this->request->post('nickname');
-        $auth          = new AuthService();
-        $auth->register($mobile_number, $verify_code, $password, $nickname);
+
+    /**
+     * 初始化操作
+     * @throws   \app\api\library\exception\ParameterException
+     * @throws   \app\api\library\exception\TokenException
+     * @throws   \think\Exception
+     */
+    protected function initialize()
+    {
+        $this->action = ucfirst($this->request->action());
+        (new ModifyUserInfoValidate())->checkParams($this->action);
+        $this->uid = AppTokenService::getCurrentTokenVar('uid');
+    }
+
+
+    /**
+     * 修改用户名
+     *
+     * @method    PUT
+     * @url       /api/v1/user/username
+     * @param     string   username  修改的用户名
+     */
+    public function modifyUsername()
+    {
+        $username = $this->request->param('username');
+
+    }
+
+
+    /**
+     * 修改昵称
+     *
+     * @method    PUT
+     * @url       /api/v1/user/nickname
+     * @param     string   nickname  修改的昵称
+     */
+    public function modifyNickname()
+    {
+        $nickname = $this->request->param('nickname');
+    }
+
+    /**
+     * 修改头像
+     *
+     * @method    PUT
+     * @url       /api/v1/user/userhead
+     * @param     string   userhead  修改的头像
+     */
+    public function modifyUserhead()
+    {
+        $userhead = $this->request->param('userhead');
     }
 }

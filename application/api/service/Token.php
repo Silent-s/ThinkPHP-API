@@ -59,11 +59,8 @@ class Token
             throw new TokenException();
         }
         $listdata = (array)$data['data'];
-        dump($listdata);
         if (array_key_exists($key, $listdata)) {
-            dump($key);
-            dump($data[$key]);
-            return $data[$key];
+            return $listdata[$key];
         }
         throw new Exception('尝试获取Token变量并不存在');
     }

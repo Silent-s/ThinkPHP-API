@@ -8,21 +8,21 @@ Route::post('api/:version/token', 'api/:version.Token/getToken');
 Route::post('api/:version/refresh_token', 'api/:version.Token/refreshToken');
 
 // 用户注册
-Route::post('api/:version/users', 'api/:version.Users/createUser');
+//Route::post('api/:version/users', 'api/:version.Users/getUserInfo');
 // 获取用户信息
-Route::get('api/:version/users', 'api/:version/getUser');
+Route::get('api/:version/user', 'api/:version.Users/getUserInfo');
 // 修改用户昵称
-Route::put('api/:version/users/username', 'api/:version/editUsername');
+Route::put('api/:version/user/username', 'api/:version.Users/editUsername');
 // 修改用户密码
-Route::put('api/:version/users/password', 'api/:version/editPassword');
+Route::put('api/:version/user/password', 'api/:version/editPassword');
 // 修改用户头像
-Route::put('api/:version/users/head_portrait', 'api/:version/editHeadPortrait');
+Route::put('api/:version/user/head_portrait', 'api/:version/editHeadPortrait');
 // 修改生日
-Route::put('api/:version/users/birthday', 'api/:version/editBirthday');
+Route::put('api/:version/user/birthday', 'api/:version/editBirthday');
 // 修改介绍
-Route::put('api/:version/users/introduce', 'api/:version/editIintroduce');
+Route::put('api/:version/user/introduce', 'api/:version/editIintroduce');
 // 修改地址
-Route::put('api/:version/users/address', 'api/:version/editAddress');
+Route::put('api/:version/user/address', 'api/:version/editAddress');
 
 
 // 增加用户地址

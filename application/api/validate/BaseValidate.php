@@ -16,11 +16,12 @@ class BaseValidate extends Validate
      * @return bool
      * @throws ParameterException
      */
-    public function checkParams()
+    public function checkParams($scene = '')
     {
-        $params  = Request::param();
+        $params = Request::param();
         // 对参数进行校验
-        $result  = $this->check($params);
+        $result = $scene ? $this->scene($scene)->check($params)
+            : $this->check($params);
         if (false === $result) {
             throw new ParameterException([
                 'msg' => $this->error
