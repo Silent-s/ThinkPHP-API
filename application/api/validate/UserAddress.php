@@ -40,7 +40,8 @@ class UserAddress extends BaseValidate
         'addUserAddress'    => ['receiver', 'telphone', 'province', 'province_id', 'city', 'city_id', 'area', 'area_id', 'address'],
         'editUserAddress'   => ['receiver', 'telphone', 'province', 'province_id', 'city', 'city_id', 'area', 'area_id', 'address', 'id'],
         'getUserAddressOne' => ['id'],
-        'delUserAddressOne' => ['id']
+        'delUserAddressOne' => ['id'],
+//        'listUserAddress'   => [],
     ];
 
 }

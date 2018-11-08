@@ -28,7 +28,7 @@ Route::post('api/:version/address', 'api/:version.Address/addUserAddress');
 // 修改用户地址
 Route::put('api/:version/address', 'api/:version.Address/editUserAddress');
 // 获取用户地址列表
-Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
+Route::get('api/:version/address/paginate', 'api/:version.Address/listUserAddress');
 // 获取用户某个地址信息
 Route::get('api/:version/address/:id', 'api/:version.Address/getUserAddressOne');
 // 删除用户某个地址(单条删除)

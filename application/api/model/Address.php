@@ -28,4 +28,20 @@ class Address extends Model
     protected $createTime = 'create_time';
     protected $updateTime = 'update_time';
 
+
+    /**
+     * 查询地址数据
+     *
+     * @param int $page
+     * @param int $size
+     * @return \think\Paginator
+     * @throws \think\exception\DbException
+     */
+    public static function getAddressByPage($page = 1, $size = 20)
+    {
+        $pagingData = self::order('create_time desc')
+            ->paginate($size, true, ['page' => $page]);
+        return $pagingData;
+    }
+
 }

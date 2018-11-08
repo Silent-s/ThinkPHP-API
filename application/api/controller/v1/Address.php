@@ -25,7 +25,7 @@ class Address extends Controller
      * @var array
      */
     protected $beforeActionList = [
-        'checkUserAddress' => ['except' => 'addUserAddress']
+        'checkUserAddress' => ['except' => 'addUserAddress,editUserAddress,listUserAddress']
     ];
 
     /**
@@ -38,8 +38,10 @@ class Address extends Controller
     protected function initialize()
     {
         $this->action = $this->request->action(true);
-        $this->validate = new UserAddressValidate();
-        $this->validate->checkParams($this->action);
+        if ($this->action != 'listUserAddress') {
+            $this->validate = new UserAddressValidate();
+            $this->validate->checkParams($this->action);
+        }
         $this->uid = AppTokenService::getCurrentTokenVar('uid');
     }
 
@@ -77,28 +79,39 @@ class Address extends Controller
     /**
      * 编辑用户地址
      *
+     *
      */
     public function editUserAddress()
     {
-
+        $params = $this->request->post();
+        $data = $this->validate->getDataByRule($params, $this->action);
+        AddressModel::update($data);
     }
 
 
     /**
-     * 删除用户地址数据
+     * 获取用户地址列表数据
      *
+     * @param int $page
+     * @param int $size
+     * @return array
+     * @throws \think\exception\DbException
      */
-    public function listUserAddress()
+    public function listUserAddress($page = 1, $size = 20)
     {
-        $result =
-
+        $pageAddress = AddressModel::getAddressByPage($page, $size);
+        return [
+            'current_page' => $pageAddress->currentPage(),
+            'data' => $pageAddress->isEmpty() ? [] : $pageAddress
+        ];
     }
 
 
     /**
      * 获取指定id的地址数据
      *
-     * @param $id
+     * @return AddressModel|null
+     * @throws \think\Exception\DbException
      */
     public function getUserAddressOne()
     {
@@ -110,11 +123,12 @@ class Address extends Controller
     /**
      * 删除指定id的地址数据
      *
-     *
+     * @throws \think\Exception\DbException
      */
     public function delUserAddressOne()
     {
-        $id = $this->request->param('id');
+        $data = AddressModel::get($this->address_id);
+        $data->delete();
     }
 
 }
