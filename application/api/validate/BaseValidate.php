@@ -45,4 +45,47 @@ class BaseValidate extends Validate
             return false;
         }
     }
+
+    /**
+     * 验证是否是正整数
+     * @param $value
+     * @param string $rule
+     * @param string $data
+     * @param string $field
+     * @return bool|string
+     */
+    protected function isPositiveInteger($value, $rule='', $data='', $field='')
+    {
+        if (is_numeric($value) && is_int($value + 0) && ($value + 0) > 0) {
+            return true;
+        }
+        return $field . '必须是正整数';
+    }
+
+    /**
+     * 过滤user_id或者uid
+     * @param $arrays
+     * @return array
+     * @throws ParameterException
+     */
+    public function getDataByRule($arrays, $action = '')
+    {
+        if (array_key_exists('user_id', $arrays) | array_key_exists('uid', $arrays)) {
+            // 不允许包含user_id或者uid，防止恶意覆盖user_id外键
+            throw new ParameterException([
+                'msg' => '参数中包含有非法的参数名user_id或者uid'
+            ]);
+        }
+        $newArray = [];
+        if ($action) {
+            foreach ($this->scene[$action] as $value) {
+                $newArray[$value] = $arrays[$value];
+            }
+        } else {
+            foreach ($this->rule as $key => $value) {
+                $newArray[$key] = $arrays[$key];
+            }
+        }
+        return $newArray;
+    }
 }

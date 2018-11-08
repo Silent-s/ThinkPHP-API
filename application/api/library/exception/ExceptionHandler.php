@@ -41,7 +41,7 @@ class ExceptionHandler extends Handle
                 return parent::render($e);
             } else {
                 $this->setRecordErrorLogs($e);
-                $this->setResponseContent(500, '服务器内部异常', $e->getMessage(), 900);
+                $this->setResponseContent(500, '服务器内部异常', 900);
             }
         }
         $result = [

@@ -2,6 +2,7 @@
 
 namespace app\api\controller\v1;
 
+use app\api\model\User as UserModel;
 use app\api\service\AppToken as AppTokenService;
 use app\api\validate\ModifyUserInfo as ModifyUserInfoValidate;
 use think\Controller;
@@ -16,7 +17,6 @@ class Users extends Controller
 
     private $action;
 
-
     /**
      * 初始化操作
      * @throws   \app\api\library\exception\ParameterException
@@ -25,9 +25,9 @@ class Users extends Controller
      */
     protected function initialize()
     {
-        $this->action = ucfirst($this->request->action());
+        $this->action = $this->request->action(true);
         (new ModifyUserInfoValidate())->checkParams($this->action);
-        $this->uid = AppTokenService::getCurrentTokenVar('uid');
+        $this->uid    = AppTokenService::getCurrentTokenVar('uid');
     }
 
 
@@ -41,7 +41,7 @@ class Users extends Controller
     public function modifyUsername()
     {
         $username = $this->request->param('username');
-
+        $result   = UserModel::update(['username' => $username], ['id' => $this->uid]);
     }
 
 
@@ -55,17 +55,19 @@ class Users extends Controller
     public function modifyNickname()
     {
         $nickname = $this->request->param('nickname');
+        $result   = UserModel::update(['nickname' => $nickname], ['id' => $this->uid]);
     }
 
     /**
      * 修改头像
      *
      * @method    PUT
-     * @url       /api/v1/user/userhead
+     * @url       /api/v1/user/avatar
      * @param     string   userhead  修改的头像
      */
-    public function modifyUserhead()
+    public function modifyAvatar()
     {
-        $userhead = $this->request->param('userhead');
+        $avatar = $this->request->param('avatar');
+        $result   = UserModel::update(['avatar' => $avatar], ['id' => $this->uid]);
     }
 }

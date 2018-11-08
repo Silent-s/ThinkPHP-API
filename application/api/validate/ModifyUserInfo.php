@@ -3,24 +3,27 @@
 namespace app\api\validate;
 
 /**
- * 修改用户信息场景
+ * 修改用户信息验证
  */
 class ModifyUserInfo extends BaseValidate
 {
-    protected $rule =   [
-        'username'  => 'require|max:25',
-        'nickname'  => 'require|max:25',
+    protected $rule = [
+        'username' => 'require|length:2,10',
+        'nickname' => 'require|length:2,10',
+        'avatar'   => 'require'
     ];
 
-    protected $message  =   [
+    protected $message = [
         'username.require' => '用户名不能为空',
-        'username.max'     => '用户名最多不能超过25个字符',
+        'username.length'  => '用户名在2-10个字符之间',
         'nickname.require' => '昵称不能为空',
-        'nickname.max'     => '昵称最多不能超过25个字符',
+        'nickname.length'  => '昵称在2-10个字符之间',
+        'avatar'           => '头像不能为空'
     ];
 
     protected $scene = [
-        'modifyUsername'  =>  ['username'],
-        'modifyNickname'  =>  ['nickname']
+        'modifyUsername' => ['username'],
+        'modifyNickname' => ['nickname'],
+        'modifyAvatar'   => ['avatar']
     ];
 }
