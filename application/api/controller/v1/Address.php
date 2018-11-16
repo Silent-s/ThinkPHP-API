@@ -17,6 +17,8 @@ class Address extends Controller
 
     private $validate;
 
+    private $address;
+
     private $address_id;
 
     /**
@@ -25,8 +27,16 @@ class Address extends Controller
      * @var array
      */
     protected $beforeActionList = [
-        'checkUserAddress' => ['except' => 'addUserAddress,editUserAddress,listUserAddress']
+        'checkUserAddress' => ['except' => 'addUserAddress,
+                       editUserAddress,listUserAddress']
     ];
+
+    /**
+     * 不需要自动验证的方法
+     *
+     * @var array
+     */
+    protected $noNeedValidate = ['listUserAddress'];
 
     /**
      * 初始化操作
@@ -38,7 +48,7 @@ class Address extends Controller
     protected function initialize()
     {
         $this->action = $this->request->action(true);
-        if ($this->action != 'listUserAddress') {
+        if (!in_array($this->action, $this->noNeedValidate, true)) {
             $this->validate = new UserAddressValidate();
             $this->validate->checkParams($this->action);
         }
@@ -58,6 +68,7 @@ class Address extends Controller
         if (!$data) {
             throw new UserAddressException();
         }
+        $this->address = $data;
         $this->address_id = $id;
     }
 
@@ -66,12 +77,11 @@ class Address extends Controller
      *
      * @url   api/v1/address
      * @method   POST
-     *
      */
     public function addUserAddress()
     {
         $params = $this->request->post();
-        $data = $this->validate->getDataByRule($params, $this->action);
+        $data   = $this->validate->getDataByRule($params, $this->action);
         $data['user_id'] = $this->uid;
         $result = AddressModel::create($data);
     }
@@ -127,8 +137,7 @@ class Address extends Controller
      */
     public function delUserAddressOne()
     {
-        $data = AddressModel::get($this->address_id);
-        $data->delete();
+        $this->address->delete();
     }
 
 }

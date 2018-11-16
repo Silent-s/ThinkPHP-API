@@ -7,6 +7,9 @@ Route::post('api/:version/token', 'api/:version.Token/getToken');
 // 用户保持登录(刷新Token)
 Route::post('api/:version/refresh_token', 'api/:version.Token/refreshToken');
 
+// 获取Banner位信息
+Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner');
+
 // 获取用户信息
 Route::get('api/:version/user', 'api/:version.Users/getUserInfo');
 // 修改用户昵称
@@ -41,7 +44,7 @@ Route::post('api/:version/files', 'api/:version.Upload/addaddress');
 
 
 // 发布文章
-Route::post('api/:version/article', 'api/:version.Upload/addUserAddress');
+Route::post('api/:version/article', 'api/:version.Upload/addArticle');
 // 文章详情
 Route::get('api/:version/article/:id', 'api/:version.Upload/addUserAddress');
 // 修改文章
