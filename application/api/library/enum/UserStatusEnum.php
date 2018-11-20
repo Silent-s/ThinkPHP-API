@@ -6,7 +6,7 @@ namespace app\api\library\enum;
  */
 class UserStatusEnum
 {
-    const Status_Fail = '0';
+    const Status_Fail = 0;   //非正常状态  禁用
 
-    const Status_Ok = '1';  //正常状态
+    const Status_Ok = 1;  //正常状态
 }

@@ -40,10 +40,7 @@ class Address extends Controller
 
     /**
      * 初始化操作
-     *
-     * @throws   \app\api\library\exception\ParameterException
-     * @throws   \app\api\library\exception\TokenException
-     * @throws   \think\Exception
+     * 自动验证和获取用户id
      */
     protected function initialize()
     {
@@ -56,10 +53,7 @@ class Address extends Controller
     }
 
     /**
-     * 检查数据ID是否存在
-     *
-     * @throws UserAddressException
-     * @throws \think\Exception\DbException
+     * 检查数据id是否存在
      */
     public function checkUserAddress()
     {
@@ -75,13 +69,13 @@ class Address extends Controller
     /**
      * 添加用户收货地址
      *
-     * @url   api/v1/address
+     * @url      api/v1/address
      * @method   POST
      */
     public function addUserAddress()
     {
         $params = $this->request->post();
-        $data   = $this->validate->getDataByRule($params, $this->action);
+        $data = $this->validate->getDataByRule($params, $this->action);
         $data['user_id'] = $this->uid;
         $result = AddressModel::create($data);
     }
@@ -89,7 +83,8 @@ class Address extends Controller
     /**
      * 编辑用户地址
      *
-     *
+     * @url      api/v1/address
+     * @method   POST
      */
     public function editUserAddress()
     {
@@ -102,10 +97,8 @@ class Address extends Controller
     /**
      * 获取用户地址列表数据
      *
-     * @param int $page
-     * @param int $size
-     * @return array
-     * @throws \think\exception\DbException
+     * @url     api/v1/address?page=1&size=20
+     * @method  GET
      */
     public function listUserAddress($page = 1, $size = 20)
     {
@@ -120,24 +113,24 @@ class Address extends Controller
     /**
      * 获取指定id的地址数据
      *
-     * @return AddressModel|null
-     * @throws \think\Exception\DbException
+     * @url     api/v1/address/:id
+     * @method  GET
      */
     public function getUserAddressOne()
     {
-        $data = AddressModel::get(['id' => $this->address_id, 'user_id' => $this->uid]);
-        return $data;
+        return $this->address;
     }
 
 
     /**
      * 删除指定id的地址数据
      *
-     * @throws \think\Exception\DbException
+     * @url     api/v1/address/:id
+     * @method  DELETE
      */
     public function delUserAddressOne()
     {
-        $this->address->delete();
+        return $this->address->delete();
     }
 
 }

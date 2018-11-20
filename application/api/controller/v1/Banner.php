@@ -17,6 +17,5 @@ class Banner extends Controller
     {
         (new IDmustIntegerValidate())->checkParams();
 
-
     }
 }
