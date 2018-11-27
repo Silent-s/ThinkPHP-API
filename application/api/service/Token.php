@@ -65,4 +65,47 @@ class Token
         throw new Exception('尝试获取Token变量并不存在');
     }
 
+
+    /**
+     * 获取header头的Authorization
+     * @return null|string
+     */
+    public function getAuthorizationHeader()
+    {
+        $headers = null;
+        $headersInfo = Request::header();
+        if (isset($headersInfo['Authorization'])) {
+            $headers = trim($headersInfo['Authorization']);
+        }
+        else if (isset($headersInfo['HTTP_AUTHORIZATION'])) {
+            $headers = trim($headersInfo['Authorization']); // Nginx or fast CGI
+        } elseif (function_exists('apache_request_headers')) {
+            $requestHeaders = apache_request_headers();
+            $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+            if (isset($requestHeaders['Authorization'])) {
+                $headers = trim($requestHeaders['Authorization']);
+            }
+        }
+        return $headers;
+    }
+
+    /**
+     * 获取访问令牌
+     * @return mixed
+     * @throws TokenException
+     */
+    public function getBearerToken()
+    {
+        $headers = $this->getAuthorizationHeader();
+        if (!empty($headers)) {
+            if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+                return $matches[1];
+            }
+        }
+        throw new TokenException([
+            'httpCode' => 301,
+            'msg' => '访问令牌未找到'
+        ]);
+    }
+
 }
