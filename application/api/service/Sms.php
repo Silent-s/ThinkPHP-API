@@ -52,17 +52,4 @@ class Sms
         $this->sendSms($mobile_number);
     }
 
-
-    public function sendSms($mobile_number)
-    {
-        $code = mt_rand(1000, 9999);
-        $params = [
-            'accessKeyId' => $this->accessKeyId,
-            'accessKeySecret' => $this->accessSecret,
-            'SignName' => $this->signName,
-            'charset' => 'UTF-8'
-        ];
-        $alisms = new Lite();
-        $alisms->sendSms($params,$mobile_number);
-    }
 }

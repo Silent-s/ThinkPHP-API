@@ -22,8 +22,12 @@
         "blocktrail/cryptojs-aes-php": "^0.1.0",
         "defuse/php-encryption": "^2.2",
         "shoudian/alisms": "dev-master",
+<<<<<<< HEAD
         "pda/pheanstalk": "^3.2",
         "predis/predis": "^1.1"
+=======
+        "davidfricker/floodgates": "^1.6"
+>>>>>>> refs/remotes/origin/master
     },
     "autoload": {
         "psr-4": {

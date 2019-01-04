@@ -7,7 +7,7 @@ use think\Controller;
 class Comment extends Controller
 {
     /**
-     * 指定id文章地址列表(没有则返回[])
+     * 指定id文章地址列表(没有数据则返回[])
      *
      *
      */

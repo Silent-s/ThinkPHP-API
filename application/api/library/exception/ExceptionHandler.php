@@ -47,7 +47,7 @@ class ExceptionHandler extends Handle
         $result = [
             'msg' => $this->msg,
             'error_code' => $this->errorCode,
-            'request_url' => Request::url(true),
+            'request' => Request::method() .'  '. Request::url(true),
         ];
         return json($result, $this->httpCode);
     }
@@ -61,18 +61,18 @@ class ExceptionHandler extends Handle
     {
         if ($e instanceof ExpiredException) {
             // token过期
-            $this->setResponseContent(401, $e->getMessage(), 703);
+            $this->setResponseContent(403, $e->getMessage(), 703);
         } else if ($e instanceof SignatureInvalidException) {
             // 签名不正确
             $this->setRecordErrorLogs($e);
-            $this->setResponseContent(401, $e->getMessage(), 701);
+            $this->setResponseContent(403, $e->getMessage(), 701);
         } else if ($e instanceof BeforeValidException) {
             // 签名在某个时间点之后才能用
             $this->setResponseContent(401, $e->getMessage(), 702);
         } else {
             // 其他错误
             $this->setRecordErrorLogs($e);
-            $this->setResponseContent(401, $e->getMessage(), 700);
+            $this->setResponseContent(403, 'Token未传递或无效Token', 700);
         }
     }
 
