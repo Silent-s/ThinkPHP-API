@@ -43,7 +43,7 @@ class Token extends Controller
      * @param     string   authorization  刷新Token('Bearer token')
      * @throws    \app\api\library\exception\ForbiddenException
      * @throws    \app\api\library\exception\ParameterException
-     * @return     array
+     * @return    array
      */
     public function refreshToken()
     {

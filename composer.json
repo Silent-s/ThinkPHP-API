@@ -21,7 +21,9 @@
         "firebase/php-jwt": "^5.0",
         "blocktrail/cryptojs-aes-php": "^0.1.0",
         "defuse/php-encryption": "^2.2",
-        "shoudian/alisms": "dev-master"
+        "shoudian/alisms": "dev-master",
+        "pda/pheanstalk": "^3.2",
+        "predis/predis": "^1.1"
     },
     "autoload": {
         "psr-4": {

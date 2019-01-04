@@ -7,6 +7,7 @@ Route::post('api/:version/token', 'api/:version.Token/getToken');
 // 用户保持登录(刷新Token)
 Route::post('api/:version/refresh_token', 'api/:version.Token/refreshToken');
 
+Route::get('api/:version/test', 'api/:version.Test/test');
 // 获取用户信息
 Route::get('api/:version/user', 'api/:version.Users/getUserInfo');
 // 修改用户昵称
@@ -49,3 +50,6 @@ Route::put('api/:version/article/:id', 'api/:version.Upload/addUserAddress');
 // 删除文章
 Route::delete('api/:version/article', 'api/:version.Upload/addUserAddress');
 
+// 管理员发红包
+Route::post('api/:version/red_envelope', 'api/:version.welfare/grabRedEnvelope');
+Route::get('api/:version/red_envelopes', 'api/:version.welfare/redEnvelopes');
