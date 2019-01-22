@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "8a65c06698282aed384b6fcdf0d7a49e",
-=======
     "content-hash": "31480e27e6e27345482f18183699f54c",
->>>>>>> refs/remotes/origin/master
     "packages": [
         {
             "name": "blocktrail/cryptojs-aes-php",
